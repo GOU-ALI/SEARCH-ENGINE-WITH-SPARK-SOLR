@@ -9,11 +9,12 @@ from pyspark import SparkConf
 from pyspark.sql import SparkSession
 import pytesseract
 from pdf2image import convert_from_path
+
 #Paths :
 dirpath = "C:/Users/asus/OneDrive/Documents/text_images"
 parent_path = os.path.abspath(os.path.join(dirpath, os.pardir))
-INPUT_PATH = "{dirpath}/resources/input".format(dirpath=dirpath)
-OUTPUT_PATH = "{dirpath}/resources/output".format(dirpath=dirpath)
+INPUT_PATH = "{dirpath}/resources/input_1".format(dirpath=dirpath)
+OUTPUT_PATH = "{dirpath}/resources/output_1".format(dirpath=dirpath)
 #Pytesseract config :
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 tessdata_dir_config = r'--tessdata-dir "C:\Program Files\Tesseract-OCR\tessdata"'
@@ -67,7 +68,7 @@ if __name__ == "__main__":
         for f in listdir(INPUT_PATH) if f.endswith('.pdf')
     ]
 
-    init_rdd = spark.sparkContext.parallelize([get_images(pdf_file, 1) for pdf_file in input_files],numSlices=10) 
+    init_rdd = spark.sparkContext.parallelize([get_images(pdf_file, 1) for pdf_file in input_files],numSlices=10)
 
     rdd_splitted = init_rdd.flatMap(lambda col: col)
 
